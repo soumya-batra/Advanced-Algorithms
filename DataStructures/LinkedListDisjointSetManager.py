@@ -38,14 +38,20 @@ class LinkedListDisjointSetManager(BaseDisjointSetManager):
         # if node is the first element
         if node_setptr.start == node:
             node_setptr.start = curr_node.next
+            # single element collection
+            if node_setptr.end == node:
+                node_setptr.end = None
+                # remove the head node reference if only single element
+                self.set_collection.remove(node_setptr)
         else:
             # node lies in betwen 1st and last element
             while curr_node.next != node:
                 curr_node = curr_node.next
             curr_node.next = node.next
-        # node is the last element
-        if node_setptr.end == node:
-            node_setptr.end = curr_node
+            # node is the last element
+            if node_setptr.end == node:            
+                node_setptr.end = curr_node
+
         # discard from mapping only if it exists
         self._node_mapping[node.node].discard(node)
         del node
