@@ -1,12 +1,14 @@
 import sys
 from collections import deque
 from LinkedListDisjointSetManager import LinkedListDisjointSetManager
+from TreeBasedDisjointSetManager import TreeBasedDisjointSetManager
 
 def run(sysargs):
     
     # Create some data
     s1 = {1,2,3,4}
-    lmgr = LinkedListDisjointSetManager()
+    #lmgr = LinkedListDisjointSetManager()
+    lmgr = TreeBasedDisjointSetManager()
     lmgr.add_set_to_collection(s1)
     print("lmgr.add_set_to_collection(s1)", lmgr)  
     # s1 = {1,2,3,4}

@@ -24,17 +24,28 @@ class BaseDisjointSetManager(object):
         self._node_mapping = defaultdict(set)
 
     
-    def add_set_to_collection(self, set_instance=None):
+    def add_set_to_collection(self, set_instance = None):
+        raise Exception('add_set_to_collection must be implemented in derived class')
+
+    def _add_set_to_collection(self, set_instance, set_setptr_to_prev):
         head_node_reference = HeadNodeRefence()
 
         if set_instance is None:
             set_instance = {}
         else:
+            curr_node = head_node_reference
             for item in set_instance:
                 node = Node(item)
-                node.setptr = head_node_reference
+
+                # set setptr based on flag passed
+                if set_setptr_to_prev:
+                    node.setptr = curr_node
+                else:
+                    node.setptr = head_node_reference
+
                 if head_node_reference.start is None:
-                    head_node_reference.start = node                    
+                    head_node_reference.start = node
+
                 else:
                     curr_node.next = node
                 
@@ -51,21 +62,30 @@ class BaseDisjointSetManager(object):
         self.set_collection.append(head_node_reference)
         return set_instance
     
-    def add_element_to_set_instance(self, element=None, set_instance=None):
+    def add_element_to_set_instance(self, element, set_instance):
+        raise Exception('add_element_to_set_instance must be implemeneted in derived class')
+
+    def _add_element_to_set_instance(self, element, set_instance, set_setptr_to_prev):
         try:
             if set_instance is None:
                 self.add_set_to_collection({element})
             else:
                 head_node_reference = self._head_node_reference_mapping[id(set_instance)]
                 node = Node(element)
-                node.setptr = head_node_reference
+
+                # set setptr based on flag passed
+                if set_setptr_to_prev:
+                    node.setptr = head_node_reference.end
+                else:
+                    node.setptr = head_node_reference
+                
                 head_node_reference.end.next = node
                 head_node_reference.end = node
                 head_node_reference.rank += 1
                 self._node_mapping[element].add(node)
             return element
         except:
-            print("we GOT EXCEPTION !!!! :)")           
+            raise Exception("either set instance does not exist or is invalid")           
     
     def _find_by_node(self, node):
         raise Exception("_find_by_node must be implemented in derived class")
@@ -116,7 +136,6 @@ class BaseDisjointSetManager(object):
 
             if node_to_be_deleted is not None:
                 self._delete_by_node(node_to_be_deleted)
-                node_to_be_deleted.setptr.rank -= 1
 
     def __str__(self):
         buff = ''
@@ -128,4 +147,9 @@ class BaseDisjointSetManager(object):
         return buff
     
     def _print(self, start_node):
-        raise Exception("_print must be implemented in derived class.")
+        curr_node = start_node
+        buff = []
+        while curr_node is not None:
+            buff += str(curr_node.node)
+            curr_node = curr_node.next
+        return ' --> '.join(buff) + '\n'

@@ -1,6 +1,12 @@
 from BaseDisjointSetManager import *
 
 class LinkedListDisjointSetManager(BaseDisjointSetManager):
+    def add_set_to_collection(self, set_instance = None):
+        return self._add_set_to_collection(set_instance, set_setptr_to_prev = False)
+
+    def add_element_to_set_instance(self, element = None, set_instance = None):
+        return self._add_element_to_set_instance(element, set_instance, set_setptr_to_prev = False)
+
     def _find_by_node(self, node):
         if node is None:
             raise Exception('empty node passed')
@@ -30,7 +36,7 @@ class LinkedListDisjointSetManager(BaseDisjointSetManager):
         self.set_collection.remove(setptr_1)
         del self._head_node_reference_mapping[setptr_1.set_id]
 
-    def _delete_by_node(self, node):
+    def _delete_by_node(self, node, delete_set_if_empty = False):
         if node is None:
             raise Exception("empty node is passed")
         node_setptr = node.setptr
@@ -41,8 +47,9 @@ class LinkedListDisjointSetManager(BaseDisjointSetManager):
             # single element collection
             if node_setptr.end == node:
                 node_setptr.end = None
-                # remove the head node reference if only single element
-                self.set_collection.remove(node_setptr)
+                if delete_set_if_empty:
+                    # remove the head node reference if only single element
+                    self.set_collection.remove(node_setptr)
         else:
             # node lies in betwen 1st and last element
             while curr_node.next != node:
@@ -52,16 +59,11 @@ class LinkedListDisjointSetManager(BaseDisjointSetManager):
             if node_setptr.end == node:            
                 node_setptr.end = curr_node
 
+        # rank update
+        node.setptr.rank -= 1
+
         # discard from mapping only if it exists
         self._node_mapping[node.node].discard(node)
         del node
-
-    def _print(self, start_node):
-        curr_node = start_node
-        buff = []
-        while curr_node is not None:
-            buff += str(curr_node.node)
-            curr_node = curr_node.next
-        return ' --> '.join(buff) + '\n'
 
         
