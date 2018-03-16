@@ -1,4 +1,6 @@
-import sys
+import sys, os
+from pathlib import Path
+sys.path.insert(0,  str(Path(os.path.abspath('__file__')).parents[2] ))
 from collections import deque
 from LinkedListDisjointSetManager import LinkedListDisjointSetManager
 from TreeBasedDisjointSetManager import TreeBasedDisjointSetManager
@@ -6,7 +8,7 @@ from TreeBasedDisjointSetManager import TreeBasedDisjointSetManager
 def run(sysargs):
     
     # Create some data
-    s1 = {1,2,3,4}
+    s1 = {1,2,3,4}  
     #lmgr = LinkedListDisjointSetManager()
     lmgr = TreeBasedDisjointSetManager()
     lmgr.add_set_to_collection(s1)
@@ -50,7 +52,7 @@ def run(sysargs):
     print("lmgr.delete(6)", lmgr)
     # s2 = {4,5,9}
     
-    lmgr.delete(4)
+    lmgr.delete(4, s2)
     print("lmgr.delete(4)", lmgr)
     # either s1 = {1,2,3} or s2 = {5,6,8,9}
 

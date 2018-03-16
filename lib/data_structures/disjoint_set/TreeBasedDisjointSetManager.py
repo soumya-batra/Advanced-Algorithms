@@ -1,4 +1,4 @@
-from BaseDisjointSetManager import *
+from data_structures.disjoint_set.BaseDisjointSetManager import *
 
 class TreeBasedDisjointSetManager(BaseDisjointSetManager):
     def add_set_to_collection(self, set_instance = None):
@@ -57,6 +57,8 @@ class TreeBasedDisjointSetManager(BaseDisjointSetManager):
             else:
                 # swap values of parent node and end node
                 parent_node.node, setptr.end.node = setptr.end.node, parent_node.node
+                node = setptr.end
+
         curr_node = parent_node
         while(curr_node.next != node):
             curr_node = curr_node.next

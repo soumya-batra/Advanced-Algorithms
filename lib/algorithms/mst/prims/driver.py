@@ -1,10 +1,9 @@
 import sys, os
 from pathlib import Path
-sys.path.insert(0, 'C:\\Users\\sobatr\\Documents\\PersonalGits\\Advanced-Algorithms\\lib')
-
+sys.path.insert(0,  str(Path(os.path.abspath('__file__')).parents[3] ))
 from data_structures.tree.base_tree import *
 from data_structures.graph.base_graph import BaseGraphNode, Graph, Edge
-from algorithms.prims.prims_mst import PrimsMST
+from algorithms.mst.prims.prims_mst import PrimsMST
 from collections import deque
 
 def run(sysargs):
@@ -35,9 +34,9 @@ def run(sysargs):
     graph_nodes[6].add_edge(graph_nodes[3], 4)
     graph_nodes[6].add_edge(graph_nodes[4], 6)
 
-    traverse_tree(PrimsMST().run_prims(graph_nodes[5]))
-    traverse_tree(PrimsMST().run_prims(graph_nodes[0]))
-    traverse_tree(PrimsMST().run_prims(graph_nodes[3]))
+    traverse_tree(PrimsMST().run(graph_nodes[5]))
+    traverse_tree(PrimsMST().run(graph_nodes[0]))
+    traverse_tree(PrimsMST().run(graph_nodes[3]))
 
 
 def traverse_tree(tree_node):

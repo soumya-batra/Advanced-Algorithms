@@ -1,8 +1,7 @@
 from heapq import heapify, heappush, heappop
-from data_structures.tree.base_tree import *
-from data_structures.graph.base_graph import UndirectedGraphNode, Graph, Edge
+from algorithms.mst.base_mst import *
 
-class PrimsMST:
+class PrimsMST(BaseMST):
     def __init__(self):
         self.helper_heap = []
         self.mst_nodes_dict = {}
@@ -32,7 +31,7 @@ class PrimsMST:
     def get_neighbors_not_in_mst(self, all_neighbors):
         return {neighbor for neighbor in all_neighbors if neighbor.coneighbor_node.node_id not in self.mst_nodes_dict}
 
-    def run_prims(self, graph_root_node):
+    def run(self, graph_root_node):
 
         # Add the initial root node to mst_nodes_dict
         root_tree_node = BaseTreeNode(edge_weight = 0, data = graph_root_node.data, node_id=graph_root_node.node_id)

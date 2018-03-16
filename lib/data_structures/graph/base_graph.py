@@ -48,5 +48,29 @@ class Graph:
     def search_node(self, node_id = None, node_data = None):
         pass
 
-    def traverse(self):
-        pass
+    def dfs_traverse(self, node_fobject_list = [print], edge_fobject_list=[print]):
+        self._dfs_recursive_traverse(self.start_node, node_fobject_list = node_fobject_list, edge_fobject_list=edge_fobject_list)
+    
+    def _dfs_recursive_traverse(self, node, visited_nodes=set(), node_fobject_list = None, edge_fobject_list=None):
+        if not (node is None or node in visited_nodes):
+            [fobject(node) for fobject in node_fobject_list if fobject is not None]
+            for edge in node.edges:
+                [fobject(node, edge) for fobject in edge_fobject_list if fobject is not None]
+                visited_nodes.add(node)
+                self._dfs_recursive_traverse(edge.coneighbor_node, node_fobject_list = node_fobject_list, edge_fobject_list = edge_fobject_list)
+    
+    def _collect_nodes(self, node):
+        if hasattr(self, "unique_nodes"):
+            self.unique_nodes.add(node)
+        else:
+            self.unique_nodes = set()
+
+    def _collect_edges(self, node, edge):
+        if hasattr(self, "unique_edges"):
+            self.unique_edges.add(edge)  
+        else:
+            self.unique_edges = set()
+
+    def get_nodes_and_edges(self):
+        self.dfs_traverse(node_fobject_list = [self._collect_nodes], edge_fobject_list=[self._collect_edges])
+        return self.unique_nodes, self.unique_edges
